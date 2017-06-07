@@ -1,0 +1,36 @@
+:443
+
+gzip
+
+log / /var/log/caddy/access.log "{when} {proto} Request from {remote} type {method} to {path} proxy to {upstream} and status {status}" {
+    rotate {
+        size 100
+        age 14
+        keep 10
+    }
+}
+
+errors {
+    log /var/log/caddy/errors.log {
+        size 100
+        age 14
+        keep 10
+    }
+}
+
+tls /etc/letsencrypt/live/****/fullchain.pem /etc/letsencrypt/live/****/privkey.pem
+
+header / {
+    X-Frame-Options "SAMEORIGIN"
+    X-Content-Type-Options "nosniff"
+    Content-Security-Policy "default-src 'self' *.google-analytics.com vine.co disqus.com *.vine.co *.disqus.com; script-src 'self' static.wowhead.com *.google-analytics.com *.disqus.com *.googleapis.com *.vine.co data: 'unsafe-inline'; style-src 'unsafe-inline' 'self' *.googleapis.com *.disquscdn.com; font-src 'self' *.gstatic.com; img-src 'self' * data:;"
+    Access-Control-Allow-Origin "{scheme}://{host}"
+}
+
+proxy / https://23.***.***.***:444 {
+    insecure_skip_verify
+    proxy_header Host {host}
+    proxy_header X-Real-IP {remote}
+    proxy_header X-Forwarded-For {remote}
+    proxy_header X-Forwarded-Proto {scheme}
+}
