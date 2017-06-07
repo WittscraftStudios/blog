@@ -1,4 +1,4 @@
-baseurl = "https://www.wittscraft.com/" # Make sure to end baseurl with a '/'
+baseurl = "https://wittscraftstudios.github.io/"  # "https://www.wittscraft.com/" # Make sure to end baseurl with a '/'
 title = "Wittscraft Studios"
 author = "Christian Witts"
 languageCode = "en-us"
